@@ -1,21 +1,45 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Navbar() {
+  let [settingData, SetSettingData] = useState({
+    siteName: import.meta.env.VITE_APP_SITE_NAME,
+    map1: import.meta.env.VITE_APP_MAP1,
+    address: import.meta.env.VITE_APP_ADDRESS,
+    email: import.meta.env.VITE_APP_EMAIL,
+    phone: import.meta.env.VITE_APP_PHONE,
+    whatsapp: import.meta.env.VITE_APP_WHATSAPP,
+    facebook: import.meta.env.VITE_APP_FACEBOOK,
+    twitter: import.meta.env.VITE_APP_TWITTER,
+    linkedin: import.meta.env.VITE_APP_LINKEDIN,
+    instagram: import.meta.env.VITE_APP_INSTAGRAM,
+    youtube: import.meta.env.VITE_APP_YOUTUBE
+  })
   return (
     <header id="header" className="header fixed-top">
 
       <div className="topbar d-flex align-items-center dark-background">
         <div className="container d-flex justify-content-center justify-content-md-between">
           <div className="contact-info d-flex align-items-center">
-            <i className="bi bi-envelope d-flex align-items-center"><a
-              href="mailto:contact@example.com">contact@example.com</a></i>
-            <i className="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
+            <i className="ms-2 bi bi-geo-alt d-flex align-items-center">
+              <Link to={`${settingData.map1}`} target='_blank'>{settingData.address}</Link>
+            </i>
+            <i className="ms-2 bi bi-envelope d-flex align-items-center">
+              <Link to={`mailto:${settingData.email}`} target='_blank'>{settingData.email}</Link>
+            </i>
+            <i className="ms-2 bi bi-telephone d-flex align-items-center">
+              <Link to={`tel:${settingData.phone}`} target='_blank'>{settingData.phone}</Link>
+            </i>
+            <i className="ms-2 bi bi-whatsapp d-flex align-items-center">
+              <Link to={`https://wa.me/${settingData.whatsapp}`} target='_blank'>{settingData.whatsapp}</Link>
+            </i>
           </div>
           <div className="social-links d-none d-md-flex align-items-center">
-            <a href="#!" className="twitter"><i className="bi bi-twitter-x"></i></a>
-            <a href="#!" className="facebook"><i className="bi bi-facebook"></i></a>
-            <a href="#!" className="instagram"><i className="bi bi-instagram"></i></a>
-            <a href="#!" className="linkedin"><i className="bi bi-linkedin"></i></a>
+            <Link to={settingData.facebook} target="_blank" className="facebook"><i className="bi bi-facebook"></i></Link>
+            <Link to={settingData.twitter} target="_blank" className="twitter"><i className="bi bi-twitter-x"></i></Link>
+            <Link to={settingData.instagram} target="_blank" className="instagram"><i className="bi bi-instagram"></i></Link>
+            <Link to={settingData.linkedin} target="_blank" className="linkedin"><i className="bi bi-linkedin"></i></Link>
+            <Link to={settingData.youtube} target="_blank" className="linkedin"><i className="bi bi-youtube"></i></Link>
           </div>
         </div>
       </div>
@@ -25,7 +49,7 @@ export default function Navbar() {
         <div className="container position-relative d-flex align-items-center justify-content-between">
           <a href="index.html" className="logo d-flex align-items-center">
             {/* <!-- <img src="assets/img/logo.webp" alt=""> --> */}
-            <h1 className="sitename">Clinic</h1>
+            <h1 className="sitename">{settingData.siteName}</h1>
           </a>
 
           <nav id="navmenu" className="navmenu">
