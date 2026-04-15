@@ -12,6 +12,7 @@ import ContactUsPage from './Pages/ContactUsPage'
 import ErrorPage from './Pages/ErrorPage'
 import PrivacyPolicy from './Pages/PrivacyPolicy'
 import TermsAndConditionPolicy from './Pages/TermsAndConditionsPolicy'
+import TestimonialPage from './Pages/TestimonialPage'
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
           <Route path='/shop' element={<ShopPage />} />
           <Route path='/feature' element={<FeaturePage />} />
           <Route path='/faq' element={<FaqPage />} />
+          <Route path='/testimonial' element={<TestimonialPage />} />
           <Route path='/contactus' element={<ContactUsPage />} />
           <Route path='/privacy-policy' element={<PrivacyPolicy />} />
           <Route path='/tc' element={<TermsAndConditionPolicy />} />
