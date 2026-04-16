@@ -66,6 +66,7 @@ export default function Navbar() {
               <li><NavLink to="/faq">Faq</NavLink></li>
               <li><NavLink to="/testimonial">Testimonials</NavLink></li>
               <li><NavLink to="/contactus">Contact Us</NavLink></li>
+              <li><NavLink to="/admin">Admin</NavLink></li>
               <li className="dropdown"><a href="#"><span>Nitin Chauhan</span> <i className="bi bi-chevron-down toggle-dropdown"></i></a>
                 <ul>
                   <li><Link to="/profile?option=Profile">Profile</Link></li>

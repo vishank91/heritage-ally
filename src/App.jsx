@@ -14,6 +14,11 @@ import PrivacyPolicy from './Pages/PrivacyPolicy'
 import TermsAndConditionPolicy from './Pages/TermsAndConditionsPolicy'
 import TestimonialPage from './Pages/TestimonialPage'
 
+
+import AdminHomePage from './Pages/Admin/AdminHomePage'
+import AdminMaincategoryPage from './Pages/Admin/Maincategory/AdminMaincatrgoryPage'
+import AdminCreateMaincategoryPage from './Pages/Admin/Maincategory/AdminCreateMaincatrgoryPage'
+
 export default function App() {
   return (
     <>
@@ -31,6 +36,11 @@ export default function App() {
           <Route path='/tc' element={<TermsAndConditionPolicy />} />
 
 
+          {/* Admin Routes */}
+          <Route path='/admin' element={<AdminHomePage />} />
+
+          <Route path='/admin/maincategory' element={<AdminMaincategoryPage />} />
+          <Route path='/admin/maincategory/create' element={<AdminCreateMaincategoryPage />} />
 
           <Route path='/*' element={<ErrorPage />} />
         </Routes>
