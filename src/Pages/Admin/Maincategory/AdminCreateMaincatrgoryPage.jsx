@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
 import TextValidators from '../../../FormValidators/TextValidators'
+import ImageValidators from '../../../FormValidators/ImageValidators'
 
 export default function AdminCreateMaincategoryPage() {
     let [data, setData] = useState({
@@ -27,7 +28,7 @@ export default function AdminCreateMaincategoryPage() {
         // let value = name === "pic" ? e.target.files[0] : e.target.value
 
         setData({ ...data, [name]: name === "status" ? (value === "1" ? true : false) : value })
-        setErrorMessage({ ...errorMessage, [name]: TextValidators(e) })
+        setErrorMessage({ ...errorMessage, [name]: name === "pic" ? ImageValidators(e) : TextValidators(e) })
     }
     async function postData(e) {
         e.preventDefault()
@@ -89,7 +90,7 @@ export default function AdminCreateMaincategoryPage() {
                                 <div className="col-md-6 mb-3">
                                     <label>Pic<span className='text-danger'>*</span></label>
                                     <input type="file" name="pic" onChange={getInputData} className={`form-control ${show && errorMessage.pic ? 'border-danger' : 'border-primary'}`} />
-                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.name}</p> : null}
+                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.pic}</p> : null}
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <label>Status<span className='text-danger'>*</span></label>

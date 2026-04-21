@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
 import TextValidators from '../../../FormValidators/TextValidators'
+import ImageValidators from '../../../FormValidators/ImageValidators'
 
 export default function AdminUpdateMaincategoryPage() {
     let { id } = useParams()
@@ -28,7 +29,7 @@ export default function AdminUpdateMaincategoryPage() {
         // let value = name === "pic" ? e.target.files[0] : e.target.value
 
         setData({ ...data, [name]: name === "status" ? (value === "1" ? true : false) : value })
-        setErrorMessage({ ...errorMessage, [name]: TextValidators(e) })
+        setErrorMessage({ ...errorMessage, [name]: name === "pic" ? ImageValidators(e) : TextValidators(e) })
     }
     async function postData(e) {
         e.preventDefault()

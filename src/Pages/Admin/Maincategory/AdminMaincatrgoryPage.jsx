@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 import { Link } from 'react-router-dom'
+
+import DataTable from 'datatables.net-dt'
+import 'datatables.net-dt/css/dataTables.dataTables.min.css';
+
+import AdminSidebar from '../../../Components/Admin/AdminSidebar'
+
 
 export default function AdminMaincategoryPage() {
     let [MaincategoryStateData, setMaincategoryStateData] = useState([])
@@ -18,7 +23,7 @@ export default function AdminMaincategoryPage() {
         }
     }
     useEffect(() => {
-        (async () => {
+        let time = (async () => {
             let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory`, {
                 method: "GET",
                 headers: {
@@ -27,7 +32,12 @@ export default function AdminMaincategoryPage() {
             })
             response = await response.json()
             setMaincategoryStateData(response)
+            let time = setTimeout(() => {
+                new DataTable('#myTable')
+            }, 500)
+            return time
         })()
+        return () => clearTimeout(time)
     }, [])
     return (
         <>
@@ -39,7 +49,7 @@ export default function AdminMaincategoryPage() {
                     <div className="col-md-9">
                         <h5 className='bg-primary text-center p-2 text-light'>Maincategory <Link to="/admin/maincategory/create"><i className='bi bi-plus text-light float-end'></i></Link></h5>
                         <div className="table-responsive">
-                            <table className='table table-bordered'>
+                            <table className='table table-bordered' id='myTable'>
                                 <thead>
                                     <tr>
                                         <th>Id</th>
