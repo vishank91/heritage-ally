@@ -69,7 +69,7 @@ export async function updateRecord(collection, payload) {
 }
 
 //Update Record Function to Call PUT API When Record Has FOrm Data i.e file field
-export async function createMultipartRecord(collection, payload) {
+export async function updateMultipartRecord(collection, payload) {
     try {
         let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/${collection}/${payload.get("id")}`, {
             method: "PUT",
@@ -86,7 +86,7 @@ export async function createMultipartRecord(collection, payload) {
 }
 
 //Delete Record Function to Call DELETE API When Record Has Only Text Data
-export async function updateRecord(collection, payload) {
+export async function deleteRecord(collection, payload) {
     try {
         let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/${collection}/${payload.id}`, {
             method: "DELETE",

@@ -8,8 +8,8 @@ import TextValidators from '../../../FormValidators/TextValidators'
 import ImageValidators from '../../../FormValidators/ImageValidators'
 
 
-import { getMaincategory, createMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
-export default function AdminCreateMaincategoryPage() {
+import { getSubcategory, createSubcategory } from "../../../Redux/ActionCreators/SubcategoryActionCreators"
+export default function AdminCreateSubcategoryPage() {
     let [data, setData] = useState({
         name: '',
         pic: '',
@@ -21,14 +21,14 @@ export default function AdminCreateMaincategoryPage() {
     })
     let [show, setShow] = useState(false)
 
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let SubcategoryStateData = useSelector(state => state.SubcategoryStateData)
     let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
     function getInputData(e) {
         let name = e.target.name
-        let value = name === "pic" ? "maincategory/" + e.target.files[0].name : e.target.value
+        let value = name === "pic" ? "subcategory/" + e.target.files[0].name : e.target.value
         // let value = name === "pic" ? e.target.files[0] : e.target.value
 
         setData({ ...data, [name]: name === "status" ? (value === "1" ? true : false) : value })
@@ -40,27 +40,27 @@ export default function AdminCreateMaincategoryPage() {
         if (error)
             setShow(true)
         else {
-            let item = MaincategoryStateData.find(x => x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
+            let item = SubcategoryStateData.find(x => x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
             if (item) {
                 setShow(true)
-                setErrorMessage({ ...errorMessage, 'name': "Maincategory With This Name Is Already Exist" })
+                setErrorMessage({ ...errorMessage, 'name': "Subcategory With This Name Is Already Exist" })
                 return
             }
-            dispatch(createMaincategory({ ...data }))
+            dispatch(createSubcategory({ ...data }))
 
             // let formData = new FormData()
             // formData.append("name",data.name)
             // formData.append("pic",data.pic)
             // formData.append("status",data.status)
-            // dispatch(createMaincategory(formData))
+            // dispatch(createSubcategory(formData))
 
-            navigate("/admin/maincategory")
+            navigate("/admin/subcategory")
         }
     }
 
     useEffect(() => {
-        (() => dispatch(getMaincategory()))()
-    }, [MaincategoryStateData.length])
+        (() => dispatch(getSubcategory()))()
+    }, [SubcategoryStateData.length])
     return (
         <>
             <div className="container my-3 admin">
@@ -69,7 +69,7 @@ export default function AdminCreateMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-md-9">
-                        <h5 className='bg-primary text-center p-2 text-light'>Create Maincategory <Link to="/admin/maincategory"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
+                        <h5 className='bg-primary text-center p-2 text-light'>Create Subcategory <Link to="/admin/subcategory"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
                         <form onSubmit={postData}>
                             <div className="row">
                                 <div className="col-12 mb-3">

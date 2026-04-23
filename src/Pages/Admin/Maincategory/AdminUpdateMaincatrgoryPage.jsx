@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
 import TextValidators from '../../../FormValidators/TextValidators'
 import ImageValidators from '../../../FormValidators/ImageValidators'
+
+import { getMaincategory, updateMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
 
 export default function AdminUpdateMaincategoryPage() {
     let { id } = useParams()
@@ -19,7 +22,8 @@ export default function AdminUpdateMaincategoryPage() {
     })
     let [show, setShow] = useState(false)
 
-    let [MaincategoryStateData, setMaincategoryStateData] = useState([])
+    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
@@ -43,41 +47,31 @@ export default function AdminUpdateMaincategoryPage() {
                 setErrorMessage({ ...errorMessage, 'name': "Maincategory With This Name Is Already Exist" })
                 return
             }
-            let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory/${id}`, {
-                method: "PUT",
-                headers: {
-                    "content-type": "application/json"
-                },
-                body: JSON.stringify({ ...data })
-            })
-            response = await response.json()
-            console.log(response)
-            if (response)
-                navigate("/admin/maincategory")
-            else {
-                alert("Something Went Wrong")
-            }
+            dispatch(updateMaincategory({ ...data }))
+
+            // let formData = new FormData()
+            // formData.append("id",data.id)
+            // formData.append("name",data.name)
+            // formData.append("pic",data.pic)
+            // formData.append("status",data.status)
+            // dispatch(updateMaincategory(formData))
+
+            navigate("/admin/maincategory")
         }
     }
 
     useEffect(() => {
-        (async () => {
-            let response = await fetch(`${import.meta.env.VITE_APP_BACKEND_SERVER}/maincategory`, {
-                method: "GET",
-                headers: {
-                    "context-type": "application/json"
-                }
-            })
-            response = await response.json()
-            let item = response.find(x => x.id === id)
-            if (item) {
-                setData({ ...data, ...item })
-                setMaincategoryStateData(response)
+        (() => {
+            dispatch(getMaincategory())
+            if (MaincategoryStateData.length) {
+                let item = MaincategoryStateData.find(x => x.id == id)
+                if (item)
+                    setData({ ...data, ...item })
+                else
+                    navigate("/admin/maincategory")
             }
-            else
-                navigate("/admin/maincategory")
         })()
-    }, [])
+    }, [MaincategoryStateData.length])
     return (
         <>
             <div className="container my-3 admin">

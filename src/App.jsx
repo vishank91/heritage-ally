@@ -16,10 +16,14 @@ import TestimonialPage from './Pages/TestimonialPage'
 
 
 import AdminHomePage from './Pages/Admin/AdminHomePage'
+
 import AdminMaincategoryPage from './Pages/Admin/Maincategory/AdminMaincatrgoryPage'
 import AdminCreateMaincategoryPage from './Pages/Admin/Maincategory/AdminCreateMaincatrgoryPage'
 import AdminUpdateMaincategoryPage from './Pages/Admin/Maincategory/AdminUpdateMaincatrgoryPage'
 
+import AdminSubcategoryPage from './Pages/Admin/Subcategory/AdminSubcatrgoryPage'
+import AdminCreateSubcategoryPage from './Pages/Admin/Subcategory/AdminCreateSubcatrgoryPage'
+import AdminUpdateSubcategoryPage from './Pages/Admin/Subcategory/AdminUpdateSubcatrgoryPage'
 export default function App() {
   return (
     <>
@@ -43,6 +47,10 @@ export default function App() {
           <Route path='/admin/maincategory' element={<AdminMaincategoryPage />} />
           <Route path='/admin/maincategory/create' element={<AdminCreateMaincategoryPage />} />
           <Route path='/admin/maincategory/update/:id' element={<AdminUpdateMaincategoryPage />} />
+
+          <Route path='/admin/subcategory' element={<AdminSubcategoryPage />} />
+          <Route path='/admin/subcategory/create' element={<AdminCreateSubcategoryPage />} />
+          <Route path='/admin/subcategory/update/:id' element={<AdminUpdateSubcategoryPage />} />
 
           <Route path='/*' element={<ErrorPage />} />
         </Routes>

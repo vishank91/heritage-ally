@@ -7,23 +7,23 @@ import 'datatables.net-dt/css/dataTables.dataTables.min.css';
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
-import { getMaincategory, deleteMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
-export default function AdminMaincategoryPage() {
+import { getSubcategory, deleteSubcategory } from "../../../Redux/ActionCreators/SubcategoryActionCreators"
+export default function AdminSubcategoryPage() {
     let [data, setData] = useState([])
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let SubcategoryStateData = useSelector(state => state.SubcategoryStateData)
     let dispatch = useDispatch()
 
     function deleteRecord(id) {
         if (window.confirm("Are You Sure to Delete That Record : ")) {
-            dispatch(deleteMaincategory({ id: id }))
+            dispatch(deleteSubcategory({ id: id }))
             setData(data.filter(x => x.id !== id))
         }
     }
     useEffect(() => {
         let time = (() => {
-            dispatch(getMaincategory())
-            if (MaincategoryStateData.length) {
-                setData(MaincategoryStateData)
+            dispatch(getSubcategory())
+            if (SubcategoryStateData.length) {
+                setData(SubcategoryStateData)
             }
             let time = setTimeout(() => {
                 new DataTable('#myTable')
@@ -31,7 +31,7 @@ export default function AdminMaincategoryPage() {
             return time
         })()
         return () => clearTimeout(time)
-    }, [MaincategoryStateData.length])
+    }, [SubcategoryStateData.length])
     return (
         <>
             <div className="container my-3 admin">
@@ -40,7 +40,7 @@ export default function AdminMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-md-9">
-                        <h5 className='bg-primary text-center p-2 text-light'>Maincategory <Link to="/admin/maincategory/create"><i className='bi bi-plus text-light float-end'></i></Link></h5>
+                        <h5 className='bg-primary text-center p-2 text-light'>Subcategory <Link to="/admin/subcategory/create"><i className='bi bi-plus text-light float-end'></i></Link></h5>
                         <div className="table-responsive">
                             <table className='table table-bordered' id='myTable'>
                                 <thead>
@@ -64,7 +64,7 @@ export default function AdminMaincategoryPage() {
                                                 </Link>
                                             </td>
                                             <td>{item.status ? "Active" : "Inactive"}</td>
-                                            <td><Link to={`/admin/maincategory/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil'></i></Link></td>
+                                            <td><Link to={`/admin/subcategory/update/${item.id}`} className='btn btn-primary'><i className='bi bi-pencil'></i></Link></td>
                                             <td><button className='btn btn-danger' onClick={() => deleteRecord(item.id)}><i className='bi bi-trash'></i></button></td>
                                         </tr>
                                     })}
