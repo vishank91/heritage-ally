@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
 import TextValidators from '../../../FormValidators/TextValidators'
 import ImageValidators from '../../../FormValidators/ImageValidators'
 
+import { getSubcategory, updateSubcategory } from "../../../Redux/ActionCreators/SubcategoryActionCreators"
 
-import { getSubcategory, createSubcategory } from "../../../Redux/ActionCreators/SubcategoryActionCreators"
-export default function AdminCreateSubcategoryPage() {
+export default function AdminUpdateSubcategoryPage() {
+    let { id } = useParams()
     let [data, setData] = useState({
         name: '',
         pic: '',
         status: true
     })
     let [errorMessage, setErrorMessage] = useState({
-        name: "Name Field is Mendatory",
-        pic: "Pic Field is Mendatory"
+        name: "",
+        pic: ""
     })
     let [show, setShow] = useState(false)
 
@@ -34,32 +35,42 @@ export default function AdminCreateSubcategoryPage() {
         setData({ ...data, [name]: name === "status" ? (value === "1" ? true : false) : value })
         setErrorMessage({ ...errorMessage, [name]: name === "pic" ? ImageValidators(e) : TextValidators(e) })
     }
-    function postData(e) {
+    async function postData(e) {
         e.preventDefault()
         let error = Object.values(errorMessage).find(x => x !== "")
         if (error)
             setShow(true)
         else {
-            let item = SubcategoryStateData.find(x => x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
+            let item = SubcategoryStateData.find(x => x.id !== id && x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
             if (item) {
                 setShow(true)
                 setErrorMessage({ ...errorMessage, 'name': "Subcategory With This Name Is Already Exist" })
                 return
             }
-            dispatch(createSubcategory({ ...data }))
+            dispatch(updateSubcategory({ ...data }))
 
             // let formData = new FormData()
+            // formData.append("id",data.id)
             // formData.append("name",data.name)
             // formData.append("pic",data.pic)
             // formData.append("status",data.status)
-            // dispatch(createSubcategory(formData))
+            // dispatch(updateSubcategory(formData))
 
             navigate("/admin/subcategory")
         }
     }
 
     useEffect(() => {
-        (() => dispatch(getSubcategory()))()
+        (() => {
+            dispatch(getSubcategory())
+            if (SubcategoryStateData.length) {
+                let item = SubcategoryStateData.find(x => x.id == id)
+                if (item)
+                    setData({ ...data, ...item })
+                else
+                    navigate("/admin/subcategory")
+            }
+        })()
     }, [SubcategoryStateData.length])
     return (
         <>
@@ -69,28 +80,28 @@ export default function AdminCreateSubcategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-md-9">
-                        <h5 className='bg-primary text-center p-2 text-light'>Create Subcategory <Link to="/admin/subcategory"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
+                        <h5 className='bg-primary text-center p-2 text-light'>Update Subcategory <Link to="/admin/subcategory"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
                         <form onSubmit={postData}>
                             <div className="row">
                                 <div className="col-12 mb-3">
                                     <label>Name <span className='text-danger'>*</span></label>
-                                    <input type="text" name="name" onChange={getInputData} placeholder='Product Name' className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`} />
+                                    <input type="text" name="name" value={data.name} onChange={getInputData} placeholder='Subcategory Name' className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`} />
                                     {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label>Pic<span className='text-danger'>*</span></label>
+                                    <label>Pic</label>
                                     <input type="file" name="pic" onChange={getInputData} className={`form-control ${show && errorMessage.pic ? 'border-danger' : 'border-primary'}`} />
-                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.pic}</p> : null}
+                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                 </div>
                                 <div className="col-md-6 mb-3">
-                                    <label>Status<span className='text-danger'>*</span></label>
-                                    <select name="status" onChange={getInputData} className='form-select border-primary'>
+                                    <label>Status</label>
+                                    <select name="status" value={data.status ? "1" : "0"} onChange={getInputData} className='form-select border-primary'>
                                         <option value="1">Active</option>
                                         <option value="0">Inctive</option>
                                     </select>
                                 </div>
                                 <div className="col-12">
-                                    <button type="submit" className='btn btn-primary w-100'>Create</button>
+                                    <button type="submit" className='btn btn-primary w-100'>Update</button>
                                 </div>
                             </div>
                         </form>

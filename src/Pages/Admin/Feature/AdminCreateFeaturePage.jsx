@@ -5,34 +5,33 @@ import { Link, useNavigate } from 'react-router-dom'
 import AdminSidebar from '../../../Components/Admin/AdminSidebar'
 
 import TextValidators from '../../../FormValidators/TextValidators'
-import ImageValidators from '../../../FormValidators/ImageValidators'
 
 
-import { getMaincategory, createMaincategory } from "../../../Redux/ActionCreators/MaincategoryActionCreators"
-export default function AdminCreateMaincategoryPage() {
+import { getFeature, createFeature } from "../../../Redux/ActionCreators/FeatureActionCreators"
+export default function AdminCreateFeaturePage() {
     let [data, setData] = useState({
         name: '',
-        pic: '',
+        icon: '',
+        description: '',
         status: true
     })
     let [errorMessage, setErrorMessage] = useState({
         name: "Name Field is Mendatory",
-        pic: "Pic Field is Mendatory"
+        icon: "Icon Field is Mendatory",
+        description: "Description Field is Mendatory"
     })
     let [show, setShow] = useState(false)
 
-    let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
+    let FeatureStateData = useSelector(state => state.FeatureStateData)
     let dispatch = useDispatch()
 
     let navigate = useNavigate()
 
     function getInputData(e) {
-        let name = e.target.name
-        let value = name === "pic" ? "maincategory/" + e.target.files[0].name : e.target.value
-        // let value = name === "pic" ? e.target.files[0] : e.target.value
+        let { name, value } = e.target
 
         setData({ ...data, [name]: name === "status" ? (value === "1" ? true : false) : value })
-        setErrorMessage({ ...errorMessage, [name]: name === "pic" ? ImageValidators(e) : TextValidators(e) })
+        setErrorMessage({ ...errorMessage, [name]: TextValidators(e) })
     }
     function postData(e) {
         e.preventDefault()
@@ -40,27 +39,20 @@ export default function AdminCreateMaincategoryPage() {
         if (error)
             setShow(true)
         else {
-            let item = MaincategoryStateData.find(x => x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
+            let item = FeatureStateData.find(x => x.name?.toLocaleLowerCase() === data.name?.toLocaleLowerCase())
             if (item) {
                 setShow(true)
-                setErrorMessage({ ...errorMessage, 'name': "Maincategory With This Name Is Already Exist" })
+                setErrorMessage({ ...errorMessage, 'name': "Feature With This Name Is Already Exist" })
                 return
             }
-            dispatch(createMaincategory({ ...data }))
-
-            // let formData = new FormData()
-            // formData.append("name",data.name)
-            // formData.append("pic",data.pic)
-            // formData.append("status",data.status)
-            // dispatch(createMaincategory(formData))
-
-            navigate("/admin/maincategory")
+            dispatch(createFeature({ ...data }))
+            navigate("/admin/feature")
         }
     }
 
     useEffect(() => {
-        (() => dispatch(getMaincategory()))()
-    }, [MaincategoryStateData.length])
+        (() => dispatch(getFeature()))()
+    }, [FeatureStateData.length])
     return (
         <>
             <div className="container my-3 admin">
@@ -69,18 +61,25 @@ export default function AdminCreateMaincategoryPage() {
                         <AdminSidebar />
                     </div>
                     <div className="col-md-9">
-                        <h5 className='bg-primary text-center p-2 text-light'>Create Maincategory <Link to="/admin/maincategory"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
+                        <h5 className='bg-primary text-center p-2 text-light'>Create Feature <Link to="/admin/feature"><i className='bi bi-arrow-left text-light float-end'></i></Link></h5>
                         <form onSubmit={postData}>
                             <div className="row">
                                 <div className="col-12 mb-3">
                                     <label>Name <span className='text-danger'>*</span></label>
-                                    <input type="text" name="name" onChange={getInputData} placeholder='Product Name' className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`} />
+                                    <input type="text" name="name" onChange={getInputData} placeholder='Feature Name' className={`form-control ${show && errorMessage.name ? 'border-danger' : 'border-primary'}`} />
                                     {show && errorMessage.name ? <p className='text-danger'>{errorMessage.name}</p> : null}
                                 </div>
+
+                                <div className="col-12 mb-3">
+                                    <label>Description <span className='text-danger'>*</span></label>
+                                    <textarea name="description" rows={3} onChange={getInputData} placeholder='Description' className={`form-control ${show && errorMessage.description ? 'border-danger' : 'border-primary'}`} ></textarea>
+                                    {show && errorMessage.description ? <p className='text-danger'>{errorMessage.description}</p> : null}
+                                </div>
+
                                 <div className="col-md-6 mb-3">
-                                    <label>Pic<span className='text-danger'>*</span></label>
-                                    <input type="file" name="pic" onChange={getInputData} className={`form-control ${show && errorMessage.pic ? 'border-danger' : 'border-primary'}`} />
-                                    {show && errorMessage.pic ? <p className='text-danger'>{errorMessage.pic}</p> : null}
+                                    <label>Icon<span className='text-danger'>*</span></label>
+                                    <input type="text" name="icon" placeholder="Bootstrap Icon Tag eg. <i class='bi bi-list'></i>" onChange={getInputData} className={`form-control ${show && errorMessage.icon ? 'border-danger' : 'border-primary'}`} />
+                                    {show && errorMessage.icon ? <p className='text-danger'>{errorMessage.icon}</p> : null}
                                 </div>
                                 <div className="col-md-6 mb-3">
                                     <label>Status<span className='text-danger'>*</span></label>
