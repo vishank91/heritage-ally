@@ -69,9 +69,9 @@ export default function Footer() {
                       <nav className="footer-nav">
                         <Link to="/" className='text-light'>Home</Link>
                         <Link to="/about" className='text-light'>About</Link>
-                        <Link to="/about" className='text-light'>Shop</Link>
-                        <Link to="/about" className='text-light'>Features</Link>
-                        <Link to="/about" className='text-light'>Faq</Link>
+                        <Link to="/shop" className='text-light'>Shop</Link>
+                        <Link to="/feature" className='text-light'>Features</Link>
+                        <Link to="/faq" className='text-light'>Faq</Link>
                       </nav>
                     </div>
                   </div>
@@ -79,10 +79,10 @@ export default function Footer() {
                     <div className="nav-column">
                       <h6 className='text-light'>Important Links</h6>
                       <nav className="footer-nav">
-                        <Link to="/about" className='text-light'>Testimonials</Link>
-                        <Link to="/about" className='text-light'>ContactUs</Link>
-                        <Link to="/about" className='text-light'>Privacy-Policy</Link>
-                        <Link to="/about" className='text-light'>Term and Conditions</Link>
+                        <Link to="/testimonial" className='text-light'>Testimonials</Link>
+                        <Link to="/contactus" className='text-light'>ContactUs</Link>
+                        <Link to="/privacy-policy" className='text-light'>Privacy-Policy</Link>
+                        <Link to="/tc" className='text-light'>Term and Conditions</Link>
                       </nav>
                     </div>
                   </div>

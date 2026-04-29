@@ -39,6 +39,10 @@ import AdminUpdateFaqPage from './Pages/Admin/Faq/AdminUpdateFaqPage'
 
 import AdminSettingPage from './Pages/Admin/Setting/AdminSettingPage'
 
+import AdminProductPage from './Pages/Admin/Product/AdminProductPage'
+import AdminCreateProductPage from './Pages/Admin/Product/AdminCreateProductPage'
+import AdminUpdateProductPage from './Pages/Admin/Product/AdminUpdateProductPage'
+
 export default function App() {
   return (
     <>
@@ -78,6 +82,10 @@ export default function App() {
           <Route path='/admin/faq' element={<AdminFaqPage />} />
           <Route path='/admin/faq/create' element={<AdminCreateFaqPage />} />
           <Route path='/admin/faq/update/:id' element={<AdminUpdateFaqPage />} />
+
+          <Route path='/admin/product' element={<AdminProductPage />} />
+          <Route path='/admin/product/create' element={<AdminCreateProductPage />} />
+          <Route path='/admin/product/update/:id' element={<AdminUpdateProductPage />} />
 
           <Route path='/admin/setting' element={<AdminSettingPage />} />
 
