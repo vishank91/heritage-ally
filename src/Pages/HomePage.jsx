@@ -1,12 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+
 import About from '../Components/About'
 import Feature from '../Components/Feature'
 import CustomerSupport from '../Components/CustomerSupport'
 import Products from '../Components/Products'
 import Testimonial from '../Components/Testimonial'
-import { Link } from 'react-router-dom'
 
+import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
 export default function HomePage() {
+  let SettingStateData = useSelector(state => state.SettingStateData)
+  let dispatch = useDispatch()
+
+  let [settingData, setSettingData] = useState({
+    siteName: import.meta.env.VITE_APP_SITE_NAME,
+  })
+
+  useEffect(() => {
+    (() => {
+      dispatch(getSetting())
+      if (SettingStateData.length) {
+        setSettingData({ siteName: SettingStateData[0].siteName || settingData.siteName })
+      }
+    })()
+  }, [SettingStateData.length])
   return (
     <>
       <section id="hero" className="hero section">
@@ -22,7 +41,7 @@ export default function HomePage() {
                 </h1>
 
                 <p className="hero-description" data-aos="fade-right" data-aos-delay="400">
-                  Explore Heritage Ally’s curated collection of timeless products blending tradition with modern style. Enjoy premium quality, exclusive designs, and a seamless shopping experience crafted just for you.
+                  Explore {settingData.siteName}'s curated collection of timeless products blending tradition with modern style. Enjoy premium quality, exclusive designs, and a seamless shopping experience crafted just for you.
                 </p>
 
                 <div className="hero-stats mb-4" data-aos="fade-right" data-aos-delay="500">

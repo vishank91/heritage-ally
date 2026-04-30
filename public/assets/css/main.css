@@ -68,6 +68,10 @@ body {
   font-family: var(--default-font);
 }
 
+.text-justify{
+  text-align: justify !important;
+}
+
 a {
   color: var(--accent-color);
   text-decoration: none;

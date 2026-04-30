@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, NavLink } from 'react-router-dom'
 
+import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
 export default function Navbar() {
+  let SettingStateData = useSelector(state => state.SettingStateData)
+  let dispatch = useDispatch()
+
   let [showMenu, setShowMenu] = useState(false)
-  let [settingData, SetSettingData] = useState({
+
+  let [settingData, setSettingData] = useState({
     siteName: import.meta.env.VITE_APP_SITE_NAME,
     map1: import.meta.env.VITE_APP_MAP1,
     address: import.meta.env.VITE_APP_ADDRESS,
@@ -16,6 +22,19 @@ export default function Navbar() {
     instagram: import.meta.env.VITE_APP_INSTAGRAM,
     youtube: import.meta.env.VITE_APP_YOUTUBE
   })
+
+  useEffect(() => {
+    (() => {
+      dispatch(getSetting())
+      if (SettingStateData.length) {
+        let data = []
+        Object.keys(settingData).forEach((x => {
+          data.push([x, SettingStateData[0][x] ? SettingStateData[0][x] : settingData[x]])
+        }))
+        setSettingData(Object.fromEntries(data))
+      }
+    })()
+  }, [SettingStateData.length])
   return (
     <header id="header" className={`header fixed-top ${showMenu ? 'mobile-nav-active' : ''}`}>
 

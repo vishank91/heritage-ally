@@ -43,6 +43,7 @@ export default function AdminUpdateProductPage() {
         pic: ""
     })
     let [show, setShow] = useState(false)
+    let [flag, setFlag] = useState(false)
 
     let ProductStateData = useSelector(state => state.ProductStateData)
     let MaincategoryStateData = useSelector(state => state.MaincategoryStateData)
@@ -54,7 +55,7 @@ export default function AdminUpdateProductPage() {
 
     function getInputData(e) {
         let name = e.target.name
-        let value = name === "pic" ? Array.from(e.target.files).map(x => "product/" + x.name) : e.target.value
+        let value = name === "pic" ? data.pic.concat(Array.from(e.target.files).map(x => "product/" + x.name)) : e.target.value
         // let value = name === "pic" ? e.target.files : e.target.value
 
         setData({ ...data, [name]: name === "status" || name === "stock" ? (value === "1" ? true : false) : value })
@@ -77,6 +78,10 @@ export default function AdminUpdateProductPage() {
         let error = Object.values(errorMessage).find(x => x !== "")
         if (error)
             setShow(true)
+        else if (data.pic.length === 0) {
+            setShow(true)
+            setErrorMessage({ ...errorMessage, pic: "Please Upload Atleast One Image" })
+        }
         else {
             let bp = parseInt(data.basePrice)
             let d = parseInt(data.discount)
@@ -201,7 +206,7 @@ export default function AdminUpdateProductPage() {
 
                                 <div className="col-lg-6 mb-3">
                                     <label>Base Price <span className='text-danger'>*</span></label>
-                                    <input type="number" value={data.finalPrice} name="basePrice" onChange={getInputData} placeholder='Product Base Price' className={`form-control ${show && errorMessage.basePrice ? 'border-danger' : 'border-primary'}`} />
+                                    <input type="number" value={data.basePrice} name="basePrice" onChange={getInputData} placeholder='Product Base Price' className={`form-control ${show && errorMessage.basePrice ? 'border-danger' : 'border-primary'}`} />
                                     {show && errorMessage.basePrice ? <p className='text-danger'>{errorMessage.basePrice}</p> : null}
                                 </div>
 
@@ -217,7 +222,7 @@ export default function AdminUpdateProductPage() {
                                         <div className="row">
                                             {colors.map((item, index) => {
                                                 return <div className='col-xl-2 col-lg-3 col-4' key={index}>
-                                                    <input type='checkbox' id={item} checked={data.color?.includes(item)}  onChange={() => getInputCheckbox('color', item)} />
+                                                    <input type='checkbox' id={item} checked={data.color?.includes(item)} onChange={() => getInputCheckbox('color', item)} />
                                                     <label htmlFor={item} className='ms-3'>{item}</label>
                                                 </div>
                                             })}
@@ -246,13 +251,8 @@ export default function AdminUpdateProductPage() {
                                     <div className='border border-primary rounded' ref={refdiv}></div>
                                 </div>
 
-                                <div className="col-lg-4 mb-3">
-                                    <label>Stock Quantity <span className='text-danger'>*</span></label>
-                                    <input type="number" name="stockQuantity" onChange={getInputData} placeholder='Product Stock Quantity' className={`form-control ${show && errorMessage.stockQuantity ? 'border-danger' : 'border-primary'}`} />
-                                    {show && errorMessage.stockQuantity ? <p className='text-danger'>{errorMessage.stockQuantity}</p> : null}
-                                </div>
 
-                                <div className="col-lg-4 mb-3">
+                                <div className="col-lg-6 mb-3">
                                     <label>Pic<span className='text-danger'>*</span></label>
                                     <input type="file" name="pic" multiple onChange={getInputData} className={`form-control ${show && errorMessage.pic ? 'border-danger' : 'border-primary'}`} />
                                     {show && errorMessage.pic ? errorMessage.pic?.split("|").map((item, index) => {
@@ -260,7 +260,25 @@ export default function AdminUpdateProductPage() {
                                     }) : null}
                                 </div>
 
-                                <div className="col-lg-4 mb-3">
+                                <div className="col-lg-6 mb-3">
+                                    <label>Old Pic (Click on Pic to Remove)</label>
+                                    <div>
+                                        {data.pic.map((item, index) => {
+                                            return <img onClick={() => {
+                                                data.pic.splice(index, 1)
+                                                setFlag(!flag)
+                                            }} src={`${import.meta.env.VITE_APP_IMAGE_SERVER}${item}`} className='m-1' height={80} width={80} />
+                                        })}
+                                    </div>
+                                </div>
+
+                                <div className="col-lg-6 mb-3">
+                                    <label>Stock Quantity <span className='text-danger'>*</span></label>
+                                    <input type="number" value={data.stockQuantity} name="stockQuantity" onChange={getInputData} placeholder='Product Stock Quantity' className={`form-control ${show && errorMessage.stockQuantity ? 'border-danger' : 'border-primary'}`} />
+                                    {show && errorMessage.stockQuantity ? <p className='text-danger'>{errorMessage.stockQuantity}</p> : null}
+                                </div>
+
+                                <div className="col-lg-6 mb-3">
                                     <label>Status<span className='text-danger'>*</span></label>
                                     <select name="status" onChange={getInputData} className='form-select border-primary'>
                                         <option value="1">Active</option>
@@ -271,7 +289,7 @@ export default function AdminUpdateProductPage() {
 
 
                                 <div className="col-12">
-                                    <button type="submit" className='btn btn-primary w-100'>Create</button>
+                                    <button type="submit" className='btn btn-primary w-100'>Update</button>
                                 </div>
                             </div>
                         </form>

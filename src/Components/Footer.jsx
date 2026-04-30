@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
+import { getSetting } from "../Redux/ActionCreators/SettingActionCreators"
 export default function Footer() {
-  let [settingData, SetSettingData] = useState({
+  let SettingStateData = useSelector(state => state.SettingStateData)
+  let dispatch = useDispatch()
+
+  let [settingData, setSettingData] = useState({
     siteName: import.meta.env.VITE_APP_SITE_NAME,
     map1: import.meta.env.VITE_APP_MAP1,
     address: import.meta.env.VITE_APP_ADDRESS,
@@ -15,6 +20,19 @@ export default function Footer() {
     instagram: import.meta.env.VITE_APP_INSTAGRAM,
     youtube: import.meta.env.VITE_APP_YOUTUBE
   })
+
+  useEffect(() => {
+    (() => {
+      dispatch(getSetting())
+      if (SettingStateData.length) {
+        let data = []
+        Object.keys(settingData).forEach((x => {
+          data.push([x, SettingStateData[0][x] ? SettingStateData[0][x] : settingData[x]])
+        }))
+        setSettingData(Object.fromEntries(data))
+      }
+    })()
+  }, [SettingStateData.length])
   return (
     <footer id="footer" className="footer-16 footer position-relative bg-dark">
 
@@ -101,12 +119,12 @@ export default function Footer() {
                       </div>
                       <div className='mt-3'>
                         <div className="social-links d-flex align-items-center">
-                        <Link to={settingData.facebook} target="_blank" className="text-light me-3"><i className="bi bi-facebook"></i></Link>
-                        <Link to={settingData.twitter} target="_blank" className="text-light me-3"><i className="bi bi-twitter-x"></i></Link>
-                        <Link to={settingData.instagram} target="_blank" className="text-light me-3"><i className="bi bi-instagram"></i></Link>
-                        <Link to={settingData.linkedin} target="_blank" className="text-light me-3"><i className="bi bi-linkedin"></i></Link>
-                        <Link to={settingData.youtube} target="_blank" className="text-light me-3"><i className="bi bi-youtube"></i></Link>
-                      </div>
+                          <Link to={settingData.facebook} target="_blank" className="text-light me-3"><i className="bi bi-facebook"></i></Link>
+                          <Link to={settingData.twitter} target="_blank" className="text-light me-3"><i className="bi bi-twitter-x"></i></Link>
+                          <Link to={settingData.instagram} target="_blank" className="text-light me-3"><i className="bi bi-instagram"></i></Link>
+                          <Link to={settingData.linkedin} target="_blank" className="text-light me-3"><i className="bi bi-linkedin"></i></Link>
+                          <Link to={settingData.youtube} target="_blank" className="text-light me-3"><i className="bi bi-youtube"></i></Link>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -120,7 +138,7 @@ export default function Footer() {
         </div>
 
       </div>
-      <div className="footer-bottom border-top" style={{marginTop:-80}}>
+      <div className="footer-bottom border-top" style={{ marginTop: -80 }}>
         <div className="container">
           <div className="bottom-content" data-aos="fade-up" data-aos-delay="300">
             <div className="row align-items-center">
